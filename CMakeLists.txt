@@ -17,4 +17,4 @@ add_executable(${PROJECT_NAME} main.cpp)
 
 add_library(glad external/glad/src/glad.c)
 target_link_libraries(${PROJECT_NAME} PRIVATE OpenGL::GL glfw glad)
-target_include_directories(glad PUBLIC external/glad/include)
+target_include_directories(glad PUBLIC external/glad/include include)
