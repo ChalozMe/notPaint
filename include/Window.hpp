@@ -2,7 +2,7 @@
 #include <memory>
 #include <string_view>
 #include <utility>
-#include "GlfwHanfle.hpp"
+#include "GlfwHandle.hpp"
 
 enum class WindowInitError {
   GlfwError,
@@ -27,24 +27,27 @@ class Window {
     if (window)
       glfwDestroyWindow(window);
   });
+  using UniqueWindow = std::unique_ptr<GLFWwindow, WindowDeleter>;
 
   GlfwHandle handle;
-  std::unique_ptr<GLFWwindow, WindowDeleter> window;
+  UniqueWindow window;
 
-  Window(GlfwHandle h, GLFWwindow* w) : handle{std::move(h)}, window{w} {}
+  Window(GlfwHandle h, UniqueWindow w) :
+    handle{std::move(h)},
+    window{std::move(w)} {}
 
 public:
   static std::expected<Window, WindowInitError> from_handle(GlfwHandle handle) {
-    GLFWwindow* window = glfwCreateWindow(800, 600, "OpenGL", nullptr, nullptr);
+    UniqueWindow window(glfwCreateWindow(800, 600, "OpenGL", nullptr, nullptr));
     if (!window)
       return std::unexpected(WindowInitError::WindowError);
 
-    glfwMakeContextCurrent(window);
+    glfwMakeContextCurrent(window.get());
 
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
       return std::unexpected(WindowInitError::GladError);
 
-    return Window{std::move(handle), window};
+    return Window{std::move(handle), std::move(window)};
   }
 
   static std::expected<Window, WindowInitError> create() {
