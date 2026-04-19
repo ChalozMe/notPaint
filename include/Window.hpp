@@ -1,3 +1,6 @@
+#ifndef WINDOW_HPP
+#define WINDOW_HPP
+
 #include <expected>
 #include <memory>
 #include <string_view>
@@ -70,3 +73,5 @@ public:
     }
   }
 };
+
+#endif
