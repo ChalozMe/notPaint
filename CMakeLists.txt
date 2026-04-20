@@ -10,15 +10,15 @@ if(POLICY CMP0072)
   cmake_policy(SET CMP0072 NEW)
 endif()
 
-# Dependency
+# Dependencies
 find_package(OpenGL 3.3 REQUIRED)
 find_package(glfw3 REQUIRED)
 
-# GLAD (loader OpenGL)
+# GLAD
 add_library(glad external/glad/src/glad.c)
 target_include_directories(glad PUBLIC external/glad/include)
 
-# src
+# Sources
 file(GLOB_RECURSE SRC_FILES CONFIGURE_DEPENDS
     src/*.cpp
 )
@@ -34,6 +34,13 @@ target_include_directories(${PROJECT_NAME}
     include
 )
 
+# Copy shaders (única fuente de verdad)
+add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_directory
+    ${CMAKE_SOURCE_DIR}/shaders
+    $<TARGET_FILE_DIR:${PROJECT_NAME}>/shaders
+)
+
 # Link
 target_link_libraries(${PROJECT_NAME}
     PRIVATE
@@ -42,17 +49,10 @@ target_link_libraries(${PROJECT_NAME}
     glad
 )
 
-# Flags - compile
+# Compile flags
 target_compile_options(${PROJECT_NAME}
     PRIVATE
     -Wall
     -Wextra
     -Wpedantic
 )
-
-# Copy shader to build
-file(GLOB SHADERS CONFIGURE_DEPENDS shaders/*)
-
-foreach(shader ${SHADERS})
-    configure_file(${shader} ${CMAKE_BINARY_DIR} COPYONLY)
-endforeach()
