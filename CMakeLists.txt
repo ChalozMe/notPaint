@@ -11,7 +11,7 @@ if(POLICY CMP0072)
 endif()
 
 # Dependencies
-find_package(OpenGL 3.3 REQUIRED)
+find_package(OpenGL 2.1 REQUIRED)
 find_package(glfw3 REQUIRED)
 
 # GLAD
