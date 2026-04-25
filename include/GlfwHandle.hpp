@@ -1,7 +1,7 @@
 #ifndef GLFW_HANDLE_HPP
 #define GLFW_HANDLE_HPP
 
-#include <glad/glad.h>
+// #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
 #include <optional>
