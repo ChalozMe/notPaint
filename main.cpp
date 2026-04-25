@@ -129,6 +129,8 @@ int main() {
   window->run([&drawables](GLFWwindow* window) {
     glClear(GL_COLOR_BUFFER_BIT);
 
+    grid.clear();
+    drawables[1]->color.r += 10;
     for (auto&& d : drawables)
       d->render(grid);
 
