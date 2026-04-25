@@ -34,13 +34,6 @@ target_include_directories(${PROJECT_NAME}
     include
 )
 
-# Copy shaders (única fuente de verdad)
-add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy_directory
-    ${CMAKE_SOURCE_DIR}/shaders
-    $<TARGET_FILE_DIR:${PROJECT_NAME}>/shaders
-)
-
 # Link
 target_link_libraries(${PROJECT_NAME}
     PRIVATE
