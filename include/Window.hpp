@@ -6,6 +6,7 @@
 #include <string_view>
 #include <utility>
 #include "GlfwHandle.hpp"
+#include "Renderer.hpp"
 
 enum class WindowInitError {
   GlfwError,
@@ -32,25 +33,35 @@ class Window {
   });
   using UniqueWindow = std::unique_ptr<GLFWwindow, WindowDeleter>;
 
+  Renderer renderer;
   GlfwHandle handle;
   UniqueWindow window;
 
-  Window(GlfwHandle h, UniqueWindow w) :
+  Window(Renderer&& renderer, GlfwHandle h, UniqueWindow w) :
+    renderer{std::move(renderer)},
     handle{std::move(h)},
     window{std::move(w)} {}
 
 public:
   static std::expected<Window, WindowInitError> from_handle(GlfwHandle handle) {
-    UniqueWindow window(glfwCreateWindow(800, 600, "OpenGL", nullptr, nullptr));
+    const auto width = 800;
+    const auto height = 800;
+    UniqueWindow window(
+      glfwCreateWindow(width, height, "OpenGL", nullptr, nullptr)
+    );
     if (!window)
       return std::unexpected(WindowInitError::WindowError);
 
     glfwMakeContextCurrent(window.get());
 
-    if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
-      return std::unexpected(WindowInitError::GladError);
+    // if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
+    // return std::unexpected(WindowInitError::GladError);
 
-    return Window{std::move(handle), std::move(window)};
+    return Window{
+      Renderer::create(width, height),
+      std::move(handle),
+      std::move(window)
+    };
   }
 
   static std::expected<Window, WindowInitError> create() {
@@ -64,10 +75,12 @@ public:
   Window(const Window&) = delete;
   Window& operator=(const Window&) = delete;
 
-  template <std::invocable<GLFWwindow*> F>
+  template <std::invocable<Renderer&, GLFWwindow*> F>
   void run(F&& runnable) {
     while (!glfwWindowShouldClose(window.get())) {
-      runnable(window.get());
+      runnable(renderer, window.get());
+      
+      renderer.send2Gpu();
       glfwSwapBuffers(window.get());
       glfwPollEvents();
     }
