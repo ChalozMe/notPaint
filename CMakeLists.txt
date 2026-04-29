@@ -18,15 +18,8 @@ find_package(glfw3 REQUIRED)
 add_library(glad external/glad/src/glad.c)
 target_include_directories(glad PUBLIC external/glad/include)
 
-# Sources
-file(GLOB_RECURSE SRC_FILES CONFIGURE_DEPENDS
-    src/*.cpp
-)
 
-add_executable(${PROJECT_NAME}
-    main.cpp
-    ${SRC_FILES}
-)
+add_executable(${PROJECT_NAME} main.cpp)
 
 # Includes
 target_include_directories(${PROJECT_NAME}

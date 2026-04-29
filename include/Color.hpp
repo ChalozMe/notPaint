@@ -1,0 +1,17 @@
+#ifndef COLOR_HPP
+#define COLOR_HPP
+
+#include <cstdint>
+
+struct Color {
+  uint8_t r, g, b, a;
+};
+
+namespace Colors {
+constexpr Color RED{0xff, 0x00, 0x00, 0xff};
+constexpr Color GREEN{0x00, 0xff, 0x00, 0xff};
+constexpr Color BLUE{0x00, 0x00, 0xff, 0xff};
+constexpr Color BLACK{0x00, 0x00, 0x00, 0xff};
+} // namespace Colors
+
+#endif

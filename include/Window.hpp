@@ -58,7 +58,7 @@ public:
     // return std::unexpected(WindowInitError::GladError);
 
     return Window{
-      Renderer::create(width, height),
+      Renderer(width, height),
       std::move(handle),
       std::move(window)
     };
@@ -79,8 +79,8 @@ public:
   void run(F&& runnable) {
     while (!glfwWindowShouldClose(window.get())) {
       runnable(renderer, window.get());
-      
-      renderer.send2Gpu();
+
+      renderer.send_to_gpu();
       glfwSwapBuffers(window.get());
       glfwPollEvents();
     }
