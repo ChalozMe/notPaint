@@ -1,38 +1,31 @@
-#include <glad/glad.h>
-#include <GLFW/glfw3.h>
-
-#include <iostream>
+#include "Window.hpp"
 #include <print>
 
+void draw_rect(
+  Renderer& r,
+  unsigned x0,
+  unsigned y0,
+  unsigned x1,
+  unsigned y1,
+  Color p
+) {
+  for (auto x = x0; x <= x1; ++x)
+    for (auto y = y0; y <= y1; ++y)
+      r[x, y] = p;
+}
+
+static constexpr auto main_loop = [](Renderer& r, GLFWwindow*) {
+  r.clear(Colors::BLACK);
+
+  draw_rect(r, 0, 0, 200, 200, Colors::RED);
+  draw_rect(r, 20, 20, 50, 50, Colors::GREEN);
+  draw_rect(r, 70, 70, 100, 100, Colors::BLUE);
+};
+
 int main() {
-  if (!glfwInit()) {
-    std::println(std::cerr, "Failed to init GLFW");
-    return -1;
-  }
+  auto window = Window::create();
+  if (!window)
+    return std::println("{}", init_error_name(window.error())), -1;
 
-  GLFWwindow* window = glfwCreateWindow(800, 600, "OpenGL", nullptr, nullptr);
-  if (!window) {
-    glfwTerminate();
-    return -1;
-  }
-
-  glfwMakeContextCurrent(window);
-
-  if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
-    std::cerr << "Failed to init GLAD\n";
-    return -1;
-  }
-
-  while (!glfwWindowShouldClose(window)) {
-    glClear(GL_COLOR_BUFFER_BIT);
-
-    glfwSwapBuffers(window);
-    glfwPollEvents();
-
-    if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
-      glfwSetWindowShouldClose(window, true);
-    }
-  }
-
-  glfwTerminate();
+  window->run(main_loop);
 }
