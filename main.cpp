@@ -1,4 +1,5 @@
 #include "Window.hpp"
+#include "figures/Line.hpp"
 #include <print>
 
 void draw_rect(
@@ -17,9 +18,12 @@ void draw_rect(
 static constexpr auto main_loop = [](Renderer& r, GLFWwindow*) {
   r.clear(Colors::BLACK);
 
-  draw_rect(r, 0, 0, 200, 200, Colors::RED);
-  draw_rect(r, 20, 20, 50, 50, Colors::GREEN);
-  draw_rect(r, 70, 70, 100, 100, Colors::BLUE);
+  //draw_rect(r, 0, 0, 200, 200, Colors::RED);
+  //draw_rect(r, 20, 20, 50, 50, Colors::GREEN);
+  //draw_rect(r, 70, 70, 100, 100, Colors::BLUE);
+  
+  figures::draw_line(r, 10, 10, 200, 150, Colors::RED);
+
 };
 
 int main() {
@@ -29,3 +33,5 @@ int main() {
 
   window->run(main_loop);
 }
+
+//testing
