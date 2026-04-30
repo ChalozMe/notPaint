@@ -46,6 +46,10 @@ class Renderer {
   }
 
 public:
+  //getter, change cos it ez solution, 
+  std::size_t get_width() const { return width; }
+  std::size_t get_height() const { return height; }
+
   Renderer(std::size_t w, std::size_t h) :
     width{w},
     height{h},
