@@ -8,6 +8,8 @@
 
 namespace figures {
 
+
+//Bresenham's line algorithim  
 inline void draw_line(
     Renderer& r,
     int x0, int y0,
@@ -23,7 +25,7 @@ inline void draw_line(
     int err = dx - dy;
 
     while (true) {
-        // Evitar out-of-bounds
+        // limit out-of-bounds
         if (x0 >= 0 && y0 >= 0 &&
             x0 < (int)r.get_width() &&
             y0 < (int)r.get_height()) {
