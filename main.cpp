@@ -22,7 +22,12 @@ static constexpr auto main_loop = [](Renderer& r, GLFWwindow*) {
   //draw_rect(r, 20, 20, 50, 50, Colors::GREEN);
   //draw_rect(r, 70, 70, 100, 100, Colors::BLUE);
   
-  figures::draw_line(r, 0, 0, 800, 800, Colors::RED);
+  //figures::draw_line(r, 0, 0, 800, 800, Colors::RED);
+  Transform2D t;
+  t.translate(100, 0).rotate(0.45f).scale(4.0f, 4.0f);
+
+  figures::draw_line(r, {0,0}, {100,0}, Colors::RED, &t);
+
 
 };
 
