@@ -1,8 +1,8 @@
 #ifndef LINE_HPP
 #define LINE_HPP
 
-#include "Renderer.hpp"
-#include "Color.hpp"
+#include "graphics/Renderer.hpp"
+#include "graphics/Color.hpp"
 
 #include <cstdlib>
 

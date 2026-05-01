@@ -6,7 +6,7 @@
 #include <string_view>
 #include <utility>
 #include "GlfwHandle.hpp"
-#include "Renderer.hpp"
+#include "graphics/Renderer.hpp"
 
 enum class WindowInitError {
   GlfwError,

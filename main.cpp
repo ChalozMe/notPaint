@@ -22,7 +22,7 @@ static constexpr auto main_loop = [](Renderer& r, GLFWwindow*) {
   //draw_rect(r, 20, 20, 50, 50, Colors::GREEN);
   //draw_rect(r, 70, 70, 100, 100, Colors::BLUE);
   
-  figures::draw_line(r, 10, 10, 200, 150, Colors::RED);
+  figures::draw_line(r, 0, 0, 800, 800, Colors::RED);
 
 };
 
