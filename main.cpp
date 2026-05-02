@@ -1,29 +1,15 @@
 #include "Window.hpp"
 #include "figures/Line.hpp"
+#include "figures/Rectangle.hpp"
 #include <print>
-
-void draw_rect(
-  Renderer& r,
-  unsigned x0,
-  unsigned y0,
-  unsigned x1,
-  unsigned y1,
-  Color p
-) {
-  for (auto x = x0; x <= x1; ++x)
-    for (auto y = y0; y <= y1; ++y)
-      r[x, y] = p;
-}
 
 static constexpr auto main_loop = [](Renderer& r, GLFWwindow*) {
   r.clear(Colors::BLACK);
 
-  //draw_rect(r, 0, 0, 200, 200, Colors::RED);
-  //draw_rect(r, 20, 20, 50, 50, Colors::GREEN);
-  //draw_rect(r, 70, 70, 100, 100, Colors::BLUE);
-  
-  figures::draw_line(r, 10, 10, 200, 150, Colors::RED);
-
+  figures::Rectangle(0, 0, 200, 200, Colors::RED).draw(r);
+  figures::Rectangle(20, 20, 50, 50, Colors::GREEN).draw(r);
+  figures::Rectangle(70, 70, 100, 100, Colors::BLUE).draw(r);
+  figures::Line(10, 10, 200, 150, Colors::WHITE).draw(r);
 };
 
 int main() {

@@ -7,15 +7,18 @@
 #include <cstdlib>
 
 namespace figures {
+struct Line {
+  int x0;
+  int y0;
+  int x1;
+  int y1;
+  Color color;
 
+  //Bresenham's line algorithim
+  void draw(Renderer& r) const {
+    int x0 = this->x0;
+    int y0 = this->y0;
 
-//Bresenham's line algorithim  
-inline void draw_line(
-    Renderer& r,
-    int x0, int y0,
-    int x1, int y1,
-    Color color
-) {
     int dx = std::abs(x1 - x0);
     int dy = std::abs(y1 - y0);
 
@@ -25,30 +28,31 @@ inline void draw_line(
     int err = dx - dy;
 
     while (true) {
-        // limit out-of-bounds
-        if (x0 >= 0 && y0 >= 0 &&
-            x0 < (int)r.get_width() &&
-            y0 < (int)r.get_height()) {
-            r[x0, y0] = color;
-        }
+      // limit out-of-bounds
+      if (
+        x0 >= 0 && y0 >= 0 && x0 < (int)r.get_width() &&
+        y0 < (int)r.get_height()
+      ) {
+        r[x0, y0] = color;
+      }
 
-        if (x0 == x1 && y0 == y1)
-            break;
+      if (x0 == x1 && y0 == y1)
+        break;
 
-        int e2 = 2 * err;
+      int e2 = 2 * err;
 
-        if (e2 > -dy) {
-            err -= dy;
-            x0 += sx;
-        }
+      if (e2 > -dy) {
+        err -= dy;
+        x0 += sx;
+      }
 
-        if (e2 < dx) {
-            err += dx;
-            y0 += sy;
-        }
+      if (e2 < dx) {
+        err += dx;
+        y0 += sy;
+      }
     }
-}
-
-}
+  }
+};
+} // namespace figures
 
 #endif
