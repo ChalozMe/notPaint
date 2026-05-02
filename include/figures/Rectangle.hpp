@@ -1,7 +1,7 @@
 #ifndef RECTANGLE_HPP
 #define RECTANGLE_HPP
 
-#include "Renderer.hpp"
+#include "Figure.hpp"
 #include "Color.hpp"
 
 namespace figures {
@@ -18,6 +18,8 @@ struct Rectangle {
         r[x, y] = color;
   }
 };
+
+static_assert(FigureLike<Rectangle>, "A rectangle is a figure");
 } // namespace figures
 
 #endif

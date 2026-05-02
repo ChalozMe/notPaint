@@ -1,7 +1,7 @@
 #ifndef LINE_HPP
 #define LINE_HPP
 
-#include "Renderer.hpp"
+#include "Figure.hpp"
 #include "Color.hpp"
 
 #include <cstdlib>
@@ -53,6 +53,8 @@ struct Line {
     }
   }
 };
+
+static_assert(FigureLike<Line>, "A rectangle is a figure");
 } // namespace figures
 
 #endif
