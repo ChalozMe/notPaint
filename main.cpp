@@ -2,6 +2,7 @@
 #include "figures/Figure.hpp"
 #include "figures/Line.hpp"
 #include "figures/Rectangle.hpp"
+#include "figures/Circle.hpp"
 
 #include <optional>
 #include <print>
@@ -23,6 +24,11 @@ std::optional<figures::Figure> parse_figure(std::istream& iss) {
     int x1, y1, x2, y2;
     if (iss >> x1 >> y1 >> x2 >> y2)
       return figures::Line(x1, y1, x2, y2, Colors::WHITE);
+  } else if (cmd == "circle") {
+    int cx, cy;
+    float radius;
+    if (iss >> cx >> cy >> radius)
+      return figures::Circle(cx, cy, radius, Colors::BLUE);
   }
   return std::nullopt;
 }
