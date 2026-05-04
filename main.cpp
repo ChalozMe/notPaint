@@ -12,29 +12,29 @@
 #include <mutex>
 #include <sstream>
 
-std::optional<figures::Figure> parse_figure(std::istream& iss) {
+std::optional<figures::Figure> parse_figure(std::istream& is) {
   std::string cmd;
-  iss >> cmd;
+  is >> cmd;
 
   if (cmd == "rect") {
-    int x, y, w, h;
-    if (iss >> x >> y >> w >> h)
-      return figures::Rectangle(x, y, w, h, Colors::RED);
+    unsigned x0, y0, x1, y1;
+    if (is >> x0 >> y0 >> x1 >> y1)
+      return figures::Rectangle(x0, y0, x1, y1, Colors::RED);
   } else if (cmd == "line") {
     int x1, y1, x2, y2;
-    if (iss >> x1 >> y1 >> x2 >> y2)
+    if (is >> x1 >> y1 >> x2 >> y2)
       return figures::Line(x1, y1, x2, y2, Colors::WHITE);
   } else if (cmd == "circle") {
     int cx, cy;
     float radius;
-    if (iss >> cx >> cy >> radius)
+    if (is >> cx >> cy >> radius)
       return figures::Circle(cx, cy, radius, Colors::BLUE);
   }
   return std::nullopt;
 }
 
 int main() {
-  auto window = Window::create();
+  auto window = Window::create(800, 600);
   if (!window)
     return std::println("{}", init_error_name(window.error())), -1;
 
@@ -43,6 +43,7 @@ int main() {
     figures::Rectangle(20, 20, 50, 50, Colors::GREEN),
     figures::Rectangle(70, 70, 100, 100, Colors::BLUE),
     figures::Line(10, 10, 200, 150, Colors::WHITE),
+    figures::Circle(200, 200, 50, Colors::WHITE),
   };
 
   std::mutex figures_mutex;

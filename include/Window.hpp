@@ -43,9 +43,8 @@ class Window {
     window{std::move(w)} {}
 
 public:
-  static std::expected<Window, WindowInitError> from_handle(GlfwHandle handle) {
-    const auto width = 800;
-    const auto height = 800;
+  static std::expected<Window, WindowInitError>
+  from_handle(int width, int height, GlfwHandle handle) {
     UniqueWindow window(
       glfwCreateWindow(width, height, "OpenGL", nullptr, nullptr)
     );
@@ -64,9 +63,9 @@ public:
     };
   }
 
-  static std::expected<Window, WindowInitError> create() {
+  static std::expected<Window, WindowInitError> create(int width, int height) {
     auto handle = GlfwHandle::create();
-    return handle ? from_handle(std::move(*handle))
+    return handle ? from_handle(width, height, std::move(*handle))
                   : std::unexpected(WindowInitError::GlfwError);
   }
 
