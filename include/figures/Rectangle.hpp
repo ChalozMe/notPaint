@@ -6,10 +6,10 @@
 
 namespace figures {
 struct Rectangle {
-  unsigned x0;
-  unsigned y0;
-  unsigned x1;
-  unsigned y1;
+  std::size_t x0;
+  std::size_t y0;
+  std::size_t x1;
+  std::size_t y1;
   Color color;
 
   void draw(Renderer& r) const {

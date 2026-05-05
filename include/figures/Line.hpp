@@ -5,50 +5,33 @@
 #include "Color.hpp"
 
 #include <cstdlib>
+#include <cstddef>
 
 namespace figures {
+// r.width() >= x1 >= x0
+// r.height() >= y1 >= y0
 struct Line {
-  int x0;
-  int y0;
-  int x1;
-  int y1;
+  std::size_t x0;
+  std::size_t y0;
+  std::size_t x1;
+  std::size_t y1;
   Color color;
 
   //Bresenham's line algorithim
   void draw(Renderer& r) const {
-    int x0 = this->x0;
-    int y0 = this->y0;
+    std::ptrdiff_t dx = x1 - x0;
+    std::ptrdiff_t dy = y1 - y0;
 
-    int dx = std::abs(x1 - x0);
-    int dy = std::abs(y1 - y0);
+    std::ptrdiff_t delta = 2 * dy - dx;
 
-    int sx = (x0 < x1) ? 1 : -1;
-    int sy = (y0 < y1) ? 1 : -1;
-
-    int err = dx - dy;
-
-    while (true) {
-      // limit out-of-bounds
-      if (
-        x0 >= 0 && y0 >= 0 && x0 < (int)r.get_width() &&
-        y0 < (int)r.get_height()
-      ) {
-        r[x0, y0] = color;
-      }
-
-      if (x0 == x1 && y0 == y1)
-        break;
-
-      int e2 = 2 * err;
-
-      if (e2 > -dy) {
-        err -= dy;
-        x0 += sx;
-      }
-
-      if (e2 < dx) {
-        err += dx;
-        y0 += sy;
+    std::size_t y = y0;
+    for (std::size_t x = x0; x <= x1; x++) {
+      r[x, y] = color;
+      if (delta > 0) {
+        y++;
+        delta += 2 * (dy - dx);
+      } else {
+        delta += 2 * dy;
       }
     }
   }

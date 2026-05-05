@@ -17,18 +17,18 @@ std::optional<figures::Figure> parse_figure(std::istream& is) {
   is >> cmd;
 
   if (cmd == "rect") {
-    unsigned x0, y0, x1, y1;
+    std::size_t x0, y0, x1, y1;
     if (is >> x0 >> y0 >> x1 >> y1)
-      return figures::Rectangle(x0, y0, x1, y1, Colors::RED);
+      return figures::Rectangle{x0, y0, x1, y1, Colors::RED};
   } else if (cmd == "line") {
-    int x1, y1, x2, y2;
+    std::size_t x1, y1, x2, y2;
     if (is >> x1 >> y1 >> x2 >> y2)
-      return figures::Line(x1, y1, x2, y2, Colors::WHITE);
+      return figures::Line{x1, y1, x2, y2, Colors::WHITE};
   } else if (cmd == "circle") {
-    int cx, cy;
+    std::size_t cx, cy;
     float radius;
     if (is >> cx >> cy >> radius)
-      return figures::Circle(cx, cy, radius, Colors::BLUE);
+      return figures::Circle{cx, cy, radius, Colors::BLUE};
   }
   return std::nullopt;
 }
@@ -39,11 +39,11 @@ int main() {
     return std::println("{}", init_error_name(window.error())), -1;
 
   std::vector<figures::Figure> figures = {
-    figures::Rectangle(0, 0, 200, 200, Colors::RED),
-    figures::Rectangle(20, 20, 50, 50, Colors::GREEN),
-    figures::Rectangle(70, 70, 100, 100, Colors::BLUE),
-    figures::Line(10, 10, 200, 150, Colors::WHITE),
-    figures::Circle(200, 200, 50, Colors::WHITE),
+    figures::Rectangle{0, 0, 200, 200, Colors::RED},
+    figures::Rectangle{20, 20, 50, 50, Colors::GREEN},
+    figures::Rectangle{70, 70, 100, 100, Colors::BLUE},
+    figures::Line{10, 10, 200, 150, Colors::WHITE},
+    figures::Circle{200, 200, 50, Colors::WHITE},
   };
 
   std::mutex figures_mutex;
