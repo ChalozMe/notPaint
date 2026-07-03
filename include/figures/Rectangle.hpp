@@ -19,7 +19,7 @@ struct Rectangle {
   }
 };
 
-static_assert(FigureLike<Rectangle>, "A rectangle is a figure");
+static_assert(Figure<Rectangle>, "A rectangle is a figure");
 } // namespace figures
 
 #endif

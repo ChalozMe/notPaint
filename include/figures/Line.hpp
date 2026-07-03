@@ -51,7 +51,7 @@ struct Line {
   }
 };
 
-static_assert(FigureLike<Line>, "A rectangle is a figure");
+static_assert(Figure<Line>, "A rectangle is a figure");
 } // namespace figures
 
 #endif

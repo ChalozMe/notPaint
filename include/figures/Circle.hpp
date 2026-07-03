@@ -39,7 +39,7 @@ struct Circle {
   }
 };
 
-static_assert(FigureLike<Circle>, "A circle is a figure");
+static_assert(Figure<Circle>, "A circle is a figure");
 } // namespace figures
 
 #endif

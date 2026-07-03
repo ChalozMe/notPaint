@@ -12,7 +12,10 @@
 #include <mutex>
 #include <sstream>
 
-std::optional<figures::Figure> parse_figure(std::istream& is) {
+using StaticFigure =
+  figures::StaticFigure<figures::Line, figures::Rectangle, figures::Circle>;
+
+std::optional<StaticFigure> parse_figure(std::istream& is) {
   std::string cmd;
   is >> cmd;
 
@@ -38,7 +41,7 @@ int main() {
   if (!window)
     return std::println("{}", init_error_name(window.error())), -1;
 
-  std::vector<figures::Figure> figures = {
+  std::vector<StaticFigure> figures = {
     figures::Rectangle{0, 0, 200, 200, Colors::RED},
     figures::Rectangle{20, 20, 50, 50, Colors::GREEN},
     figures::Rectangle{70, 70, 100, 100, Colors::BLUE},
