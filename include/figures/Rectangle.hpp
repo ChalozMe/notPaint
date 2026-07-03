@@ -2,7 +2,6 @@
 #define RECTANGLE_HPP
 
 #include "Figure.hpp"
-#include "Color.hpp"
 
 namespace figures {
 struct Rectangle {
@@ -10,13 +9,12 @@ struct Rectangle {
   std::size_t y0;
   std::size_t x1;
   std::size_t y1;
-  Color color;
 
-  template <std::invocable<std::size_t, std::size_t, Color> Visit>
+  template <std::invocable<std::size_t, std::size_t> Visit>
   void visit_pixels(Visit&& visit) const {
     for (auto x = x0; x <= x1; ++x)
       for (auto y = y0; y <= y1; ++y)
-        visit(x, y, color);
+        visit(x, y);
   }
 };
 

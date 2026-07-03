@@ -35,20 +35,19 @@ public:
         first_click.x,
         first_click.y,
         static_cast<std::size_t>(x),
-        static_cast<std::size_t>(y),
-        {255, 0, 0, 255}
+        static_cast<std::size_t>(y)
       };
     }
   }
 
-  template <std::invocable<std::size_t, std::size_t, Color> Visit>
+  template <std::invocable<std::size_t, std::size_t> Visit>
   void visit_pixels(Visit&& visit) const {
     auto first = std::get_if<FirstClick>(&click);
 
     if (!first)
       return;
 
-    visit(first->x, first->y, Colors::BLACK);
+    visit(first->x, first->y);
   }
 };
 

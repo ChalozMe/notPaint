@@ -12,7 +12,7 @@ concept Tool = requires(T& t) {
   requires figures::Figure<typename T::Target>;
   { t.mouse(0, 0, 0, 0) } -> std::same_as<std::optional<typename T::Target>>;
   {
-    std::as_const(t).visit_pixels([](std::size_t, std::size_t, Color) {})
+    std::as_const(t).visit_pixels([](std::size_t, std::size_t) {})
   } -> std::same_as<void>;
 };
 
@@ -46,7 +46,7 @@ public:
     );
   }
 
-  template <std::invocable<std::size_t, std::size_t, Color> Visit>
+  template <std::invocable<std::size_t, std::size_t> Visit>
   void visit_pixels(Visit&& visit) const {
     std::visit(
       [&](auto&& t) { t.visit_pixels(std::forward<Visit>(visit)); },

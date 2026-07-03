@@ -2,8 +2,6 @@
 #define LINE_HPP
 
 #include "Figure.hpp"
-#include "Color.hpp"
-
 #include <cstdlib>
 #include <cstddef>
 
@@ -13,10 +11,9 @@ struct Line {
   std::size_t y0;
   std::size_t x1;
   std::size_t y1;
-  Color color;
 
   //Bresenham's line algorithim
-  template <std::invocable<std::size_t, std::size_t, Color> Visit>
+  template <std::invocable<std::size_t, std::size_t> Visit>
   void visit_pixels(Visit&& visit) const {
     std::ptrdiff_t x0 = static_cast<std::ptrdiff_t>(this->x0);
     std::ptrdiff_t y0 = static_cast<std::ptrdiff_t>(this->y0);
@@ -32,7 +29,7 @@ struct Line {
     std::ptrdiff_t err = dx - dy;
 
     while (true) {
-      visit(x0, y0, color);
+      visit(x0, y0);
 
       if (x0 == x1 && y0 == y1)
         break;

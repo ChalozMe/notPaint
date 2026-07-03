@@ -12,9 +12,10 @@ namespace shape {
 template <figures::Figure... Fs>
 struct Shape {
   figures::StaticFigure<Fs...> figure;
+  Color color;
 
   void draw(Renderer& r) const {
-    figure.visit_pixels([&r](std::size_t x, std::size_t y, Color color) {
+    figure.visit_pixels([&](std::size_t x, std::size_t y) {
       if (x < r.get_width() && y < r.get_height())
         r[x, y] = color;
     });
@@ -40,11 +41,11 @@ using Shape = shape::FromStaticFigure<StaticFigure>;
 
 class NotPaint {
   std::vector<Shape> shapes = {
-    {figures::Rectangle{0, 0, 200, 200, Colors::RED}},
-    {figures::Rectangle{20, 20, 50, 50, Colors::GREEN}},
-    {figures::Rectangle{70, 70, 100, 100, Colors::BLUE}},
-    {figures::Line{10, 10, 200, 150, Colors::BLACK}},
-    {figures::Circle{200, 200, 50, Colors::BLACK}},
+    {figures::Rectangle{0, 0, 200, 200}, {Colors::RED}},
+    {figures::Rectangle{20, 20, 50, 50}, {Colors::GREEN}},
+    {figures::Rectangle{70, 70, 100, 100}, {Colors::BLUE}},
+    {figures::Line{10, 10, 200, 150}, {Colors::BLACK}},
+    {figures::Circle{200, 200, 50}, {Colors::BLACK}},
   };
 
   std::optional<StaticTool> tool = tools::CircleTool{};
@@ -65,7 +66,7 @@ public:
       return;
 
     if (auto figure = tool->mouse(button, state, x, y))
-      shapes.emplace_back(Shape{std::move(*figure)});
+      shapes.emplace_back(Shape{std::move(*figure), Colors::BLACK});
   }
 
   void motion(int, int) {}

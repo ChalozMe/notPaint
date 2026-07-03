@@ -1,7 +1,6 @@
 #ifndef FIGURE_HPP
 #define FIGURE_HPP
 
-#include "Color.hpp"
 #include <concepts>
 #include <utility>
 #include <variant>
@@ -10,7 +9,7 @@ namespace figures {
 template <class F>
 concept Figure = requires(const F& f) {
   {
-    f.visit_pixels([](std::size_t, std::size_t, Color) {})
+    f.visit_pixels([](std::size_t, std::size_t) {})
   } -> std::same_as<void>;
 };
 
@@ -33,7 +32,7 @@ public:
   explicit constexpr StaticFigure(std::in_place_type_t<F>, Args&&... args) :
     variant(std::in_place_type<F>, std::forward<Args>(args)...) {}
 
-  template <std::invocable<std::size_t, std::size_t, Color> Visit>
+  template <std::invocable<std::size_t, std::size_t> Visit>
   void visit_pixels(Visit&& visit) const {
     std::visit(
       [&](auto&& f) { f.visit_pixels(std::forward<Visit>(visit)); },

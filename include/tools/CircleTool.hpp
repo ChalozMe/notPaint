@@ -36,18 +36,18 @@ public:
       );
       click = NoClick{};
 
-      return Target{first_click.x, first_click.y, radius, {255, 0, 0, 255}};
+      return Target{first_click.x, first_click.y, radius};
     }
   }
 
-  template <std::invocable<std::size_t, std::size_t, Color> Visit>
+  template <std::invocable<std::size_t, std::size_t> Visit>
   void visit_pixels(Visit&& visit) const {
     auto first = std::get_if<FirstClick>(&click);
 
     if (!first)
       return;
 
-    visit(first->x, first->y, Colors::BLACK);
+    visit(first->x, first->y);
   }
 };
 
