@@ -1,23 +1,24 @@
 #ifndef FIGURE_HPP
 #define FIGURE_HPP
 
+#include "Color.hpp"
 #include <concepts>
 #include <utility>
 #include <variant>
-#include "Renderer.hpp"
 
 namespace figures {
 template <class F>
-concept Figure = requires(const F& f, Renderer& r) {
+concept Figure = requires(const F& f) {
   requires std::copy_constructible<F>;
-  { f.draw(r) } -> std::same_as<void>;
+  {
+    f.visit_pixels([](std::size_t, std::size_t, Color) {})
+  } -> std::same_as<void>;
 };
 
-// Type erased class, value semantics, non-nullable
 template <Figure... Fs>
 class StaticFigure {
   using Variant = std::variant<Fs...>;
-  Variant v;
+  Variant variant;
 
 public:
   constexpr StaticFigure() = default;
@@ -25,16 +26,20 @@ public:
   template <Figure F>
     requires(!std::same_as<std::remove_cvref_t<F>, StaticFigure>) &&
     (std::same_as<std::remove_cvref_t<F>, Fs> || ...)
-  constexpr StaticFigure(F&& f) : v(std::forward<F>(f)) {}
+  constexpr StaticFigure(F&& f) : variant(std::forward<F>(f)) {}
 
   template <Figure F, class... Args>
     requires std::constructible_from<F, Args...> &&
     (std::same_as<std::remove_cvref_t<F>, Fs> || ...)
   explicit constexpr StaticFigure(std::in_place_type_t<F>, Args&&... args) :
-    v(std::in_place_type<F>, std::forward<Args>(args)...) {}
+    variant(std::in_place_type<F>, std::forward<Args>(args)...) {}
 
-  void draw(Renderer& r) const {
-    std::visit([&r](auto&& f) { f.draw(r); }, v);
+  template <std::invocable<std::size_t, std::size_t, Color> Visit>
+  void visit_pixels(Visit&& visit) const {
+    std::visit(
+      [&](auto&& f) { f.visit_pixels(std::forward<Visit>(visit)); },
+      variant
+    );
   }
 };
 

@@ -12,10 +12,11 @@ struct Rectangle {
   std::size_t y1;
   Color color;
 
-  void draw(Renderer& r) const {
+  template <std::invocable<std::size_t, std::size_t, Color> Visit>
+  void visit_pixels(Visit&& visit) const {
     for (auto x = x0; x <= x1; ++x)
       for (auto y = y0; y <= y1; ++y)
-        r[x, y] = color;
+        visit(x, y, color);
   }
 };
 

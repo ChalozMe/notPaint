@@ -16,7 +16,8 @@ struct Line {
   Color color;
 
   //Bresenham's line algorithim
-  void draw(Renderer& r) const {
+  template <std::invocable<std::size_t, std::size_t, Color> Visit>
+  void visit_pixels(Visit&& visit) const {
     std::ptrdiff_t x0 = static_cast<std::ptrdiff_t>(this->x0);
     std::ptrdiff_t y0 = static_cast<std::ptrdiff_t>(this->y0);
     std::ptrdiff_t x1 = static_cast<std::ptrdiff_t>(this->x1);
@@ -31,7 +32,7 @@ struct Line {
     std::ptrdiff_t err = dx - dy;
 
     while (true) {
-      r[x0, y0] = color;
+      visit(x0, y0, color);
 
       if (x0 == x1 && y0 == y1)
         break;

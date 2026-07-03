@@ -12,10 +12,38 @@
 #include <mutex>
 #include <sstream>
 
-using StaticFigure =
-  figures::StaticFigure<figures::Line, figures::Rectangle, figures::Circle>;
+namespace figures {
+template <Figure... Fs>
+class Shape {
+  figures::StaticFigure<Fs...> figure;
 
-std::optional<StaticFigure> parse_figure(std::istream& is) {
+public:
+  constexpr Shape() = default;
+
+  template <Figure F>
+    requires(!std::same_as<std::remove_cvref_t<F>, Shape>) &&
+    (std::same_as<std::remove_cvref_t<F>, Fs> || ...)
+  constexpr Shape(F&& f) : figure(std::forward<F>(f)) {}
+
+  template <Figure F, class... Args>
+    requires std::constructible_from<F, Args...> &&
+    (std::same_as<std::remove_cvref_t<F>, Fs> || ...)
+  explicit constexpr Shape(std::in_place_type_t<F>, Args&&... args) :
+    figure(std::in_place_type<F>, std::forward<Args>(args)...) {}
+
+  void draw(Renderer& r) const {
+    figure.visit_pixels([&r](std::size_t x, std::size_t y, Color color) {
+      if (x < r.get_width() && y < r.get_height())
+        r[x, y] = color;
+    });
+  }
+};
+} // namespace figures
+
+using Shape =
+  figures::Shape<figures::Line, figures::Rectangle, figures::Circle>;
+
+std::optional<Shape> parse_figure(std::istream& is) {
   std::string cmd;
   is >> cmd;
 
@@ -41,7 +69,7 @@ int main() {
   if (!window)
     return std::println("{}", init_error_name(window.error())), -1;
 
-  std::vector<StaticFigure> figures = {
+  std::vector<Shape> shapes = {
     figures::Rectangle{0, 0, 200, 200, Colors::RED},
     figures::Rectangle{20, 20, 50, 50, Colors::GREEN},
     figures::Rectangle{70, 70, 100, 100, Colors::BLUE},
@@ -58,7 +86,7 @@ int main() {
       std::istringstream iss(line);
       if (auto figure = parse_figure(iss)) {
         std::scoped_lock lock(figures_mutex);
-        figures.emplace_back(std::move(*figure));
+        shapes.emplace_back(std::move(*figure));
       }
     }
   }).detach();
@@ -67,7 +95,7 @@ int main() {
     r.clear(Colors::BLACK);
 
     std::scoped_lock lock(figures_mutex);
-    for (auto&& figure : figures)
-      figure.draw(r);
+    for (auto&& shape : shapes)
+      shape.draw(r);
   });
 }
