@@ -9,7 +9,6 @@
 namespace figures {
 template <class F>
 concept Figure = requires(const F& f) {
-  requires std::copy_constructible<F>;
   {
     f.visit_pixels([](std::size_t, std::size_t, Color) {})
   } -> std::same_as<void>;
