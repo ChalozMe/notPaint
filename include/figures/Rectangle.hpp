@@ -2,6 +2,7 @@
 #define RECTANGLE_HPP
 
 #include "Figure.hpp"
+#include <algorithm>
 
 namespace figures {
 struct Rectangle {
@@ -12,8 +13,8 @@ struct Rectangle {
 
   template <std::invocable<std::size_t, std::size_t> Visit>
   void visit_pixels(Visit&& visit) const {
-    for (auto x = x0; x <= x1; ++x)
-      for (auto y = y0; y <= y1; ++y)
+    for (auto x = std::min(x0, x1); x <= std::max(x1, x0); ++x)
+      for (auto y = std::min(y0, y1); y <= std::max(y1, y0); ++y)
         visit(x, y);
   }
 };
