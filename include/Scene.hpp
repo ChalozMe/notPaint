@@ -1,11 +1,12 @@
 #ifndef SCENE_HPP
 #define SCENE_HPP
 
+#include "Renderer.hpp"
 #include <GL/freeglut_std.h>
 #include <concepts>
 
 template <class S>
-concept Scene = std::invocable<decltype(&S::display), const S&> &&
+concept Scene = std::invocable<decltype(&S::display), const S&, Renderer&> &&
   std::invocable<decltype(&S::idle), S&>;
 
 template <class S>
@@ -39,10 +40,12 @@ void play_scene(int argc, char* argv[], const char* title) {
   glClearColor(0.f, 0.f, 0.f, 1.f);
 
   static S scene;
+  static Renderer renderer{WIDTH, HEIGHT};
 
   glutDisplayFunc([]() {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    scene.display();
+    scene.display(renderer);
+    renderer.send_to_gpu();
     glutSwapBuffers();
   });
 

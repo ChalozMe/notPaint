@@ -1,7 +1,6 @@
 #ifndef NOT_PAINT_HPP
 #define NOT_PAINT_HPP
 
-#include "Scene.hpp"
 #include "Renderer.hpp"
 #include "figures/Figure.hpp"
 #include "tools/Tool.hpp"
@@ -54,7 +53,6 @@ using StaticFigure = StaticTool::StaticFigure;
 using Shape = shape::FromStaticFigure<StaticFigure>;
 
 class NotPaint {
-  mutable Renderer renderer{WIDTH, HEIGHT};
   std::vector<Shape> shapes = {
     figures::Rectangle{0, 0, 200, 200, Colors::RED},
     figures::Rectangle{20, 20, 50, 50, Colors::GREEN},
@@ -66,11 +64,10 @@ class NotPaint {
 public:
   NotPaint() = default;
 
-  void display() const {
+  void display(Renderer& renderer) const {
     renderer.clear(Colors::WHITE);
     for (auto&& shape : shapes)
       shape.draw(renderer);
-    renderer.send_to_gpu();
   }
 
   void idle() {}

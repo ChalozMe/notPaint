@@ -1,3 +1,4 @@
+#include "Scene.hpp"
 #include "NotPaint.hpp"
 
 int main(int argc, char* argv[]) {
