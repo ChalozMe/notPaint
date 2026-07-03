@@ -1,12 +1,14 @@
 #ifndef NOT_PAINT_HPP
 #define NOT_PAINT_HPP
 
+#include "Color.hpp"
 #include "Renderer.hpp"
 #include "figures/Figure.hpp"
 #include "tools/Tool.hpp"
 #include "tools/LineTool.hpp"
 #include "tools/RectangleTool.hpp"
 #include "tools/CircleTool.hpp"
+#include "tools/CrossTool.hpp"
 
 namespace shape {
 template <figures::Figure... Fs>
@@ -34,8 +36,11 @@ template <class Sf>
 using FromStaticFigure = FromStaticFigureImpl<Sf>::t;
 } // namespace shape
 
-using StaticTool =
-  tools::StaticTool<tools::LineTool, tools::RectangleTool, tools::CircleTool>;
+using StaticTool = tools::StaticTool<
+  tools::LineTool,
+  tools::RectangleTool,
+  tools::CircleTool,
+  tools::CrossTool>;
 using StaticFigure = StaticTool::StaticFigure;
 using Shape = shape::FromStaticFigure<StaticFigure>;
 
@@ -57,6 +62,11 @@ public:
     renderer.clear(Colors::WHITE);
     for (auto&& shape : shapes)
       shape.draw(renderer);
+
+    if (tool)
+      tool->visit_pixels([&](std::size_t x, std::size_t y) {
+        Shape{figures::Cross{x, y, 5}, Colors::BLACK}.draw(renderer);
+      });
   }
 
   void idle() {}
@@ -84,6 +94,9 @@ public:
         break;
       case 'c':
         tool = tools::CircleTool{};
+        break;
+      case 'x':
+        tool = tools::CrossTool{};
         break;
     }
   }
