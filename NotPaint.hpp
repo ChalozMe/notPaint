@@ -10,22 +10,8 @@
 
 namespace shape {
 template <figures::Figure... Fs>
-class Shape {
+struct Shape {
   figures::StaticFigure<Fs...> figure;
-
-public:
-  constexpr Shape() = default;
-
-  template <figures::Figure F>
-    requires(!std::same_as<std::remove_cvref_t<F>, Shape>) &&
-    (std::same_as<std::remove_cvref_t<F>, Fs> || ...)
-  constexpr Shape(F&& f) : figure(std::forward<F>(f)) {}
-
-  template <figures::Figure F, class... Args>
-    requires std::constructible_from<F, Args...> &&
-    (std::same_as<std::remove_cvref_t<F>, Fs> || ...)
-  explicit constexpr Shape(std::in_place_type_t<F>, Args&&... args) :
-    figure(std::in_place_type<F>, std::forward<Args>(args)...) {}
 
   void draw(Renderer& r) const {
     figure.visit_pixels([&r](std::size_t x, std::size_t y, Color color) {
@@ -54,12 +40,14 @@ using Shape = shape::FromStaticFigure<StaticFigure>;
 
 class NotPaint {
   std::vector<Shape> shapes = {
-    figures::Rectangle{0, 0, 200, 200, Colors::RED},
-    figures::Rectangle{20, 20, 50, 50, Colors::GREEN},
-    figures::Rectangle{70, 70, 100, 100, Colors::BLUE},
-    figures::Line{10, 10, 200, 150, Colors::BLACK},
-    figures::Circle{200, 200, 50, Colors::BLACK},
+    {figures::Rectangle{0, 0, 200, 200, Colors::RED}},
+    {figures::Rectangle{20, 20, 50, 50, Colors::GREEN}},
+    {figures::Rectangle{70, 70, 100, 100, Colors::BLUE}},
+    {figures::Line{10, 10, 200, 150, Colors::BLACK}},
+    {figures::Circle{200, 200, 50, Colors::BLACK}},
   };
+
+  std::optional<StaticTool> tool = tools::CircleTool{};
 
 public:
   NotPaint() = default;
@@ -71,6 +59,16 @@ public:
   }
 
   void idle() {}
+
+  void mouse(int button, int state, int x, int y) {
+    if (!tool)
+      return;
+
+    if (auto figure = tool->mouse(button, state, x, y))
+      shapes.emplace_back(Shape{std::move(*figure)});
+  }
+
+  void motion(int, int) {}
 };
 
 #endif

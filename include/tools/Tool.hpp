@@ -38,9 +38,12 @@ public:
   using StaticFigure = figures::StaticFigure<typename Ts::Target...>;
 
   std::optional<StaticFigure> mouse(int button, int state, int x, int y) {
-    return std::visit([&](auto&& t) -> std::optional<StaticFigure> {
-      return t.mouse(button, state, x, y);
-    });
+    return std::visit(
+      [&](auto&& t) -> std::optional<StaticFigure> {
+        return t.mouse(button, state, x, y);
+      },
+      variant
+    );
   }
 
   template <std::invocable<std::size_t, std::size_t, Color> Visit>
