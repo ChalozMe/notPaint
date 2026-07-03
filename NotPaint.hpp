@@ -69,6 +69,25 @@ public:
   }
 
   void motion(int, int) {}
+
+  void keyboard(unsigned char key, int, int) {
+    switch (key) {
+      case 27: // Escape key
+        tool.reset();
+        break;
+      case 'l':
+        tool = tools::LineTool{};
+        break;
+      case 'r':
+        tool = tools::RectangleTool{};
+        break;
+      case 'c':
+        tool = tools::CircleTool{};
+        break;
+    }
+  }
+
+  void special(int, int, int) {}
 };
 
 #endif
