@@ -1,8 +1,6 @@
 #ifndef NOT_PAINT_HPP
 #define NOT_PAINT_HPP
 
-#include "Color.hpp"
-#include "Renderer.hpp"
 #include "figures/Figure.hpp"
 #include "tools/Tool.hpp"
 #include "tools/LineTool.hpp"
@@ -66,9 +64,7 @@ public:
       shape.draw(renderer);
 
     if (tool)
-      tool->visit_pixels([&](std::size_t x, std::size_t y) {
-        Shape{figures::Cross{x, y, 5}, Colors::BLACK}.draw(renderer);
-      });
+      tool->draw(renderer);
   }
 
   void idle() {}

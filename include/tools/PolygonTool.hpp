@@ -2,6 +2,7 @@
 #define POLYGON_TOOL_HPP
 
 #include "Tool.hpp"
+#include "figures/Cross.hpp"
 #include "figures/Line.hpp"
 #include "figures/Polygon.hpp"
 #include <GL/freeglut_std.h>
@@ -36,17 +37,24 @@ public:
     }
   }
 
-  template <std::invocable<std::size_t, std::size_t> Visit>
-  void visit_pixels(Visit&& visit) const {
+  void draw(Renderer& renderer) const {
+    auto drawer = [&](std::size_t x, std::size_t y) {
+      renderer[x, y] = Colors::BLACK;
+    };
+
+    for (auto [x, y] : points)
+      figures::Cross{x, y, 5.0f}.visit_pixels(drawer);
+
     for (auto [p0, p1] : std::views::pairwise(points)) {
       auto [x0, y0] = p0;
       auto [x1, y1] = p1;
-      figures::Line{x0, y0, x1, y1}.visit_pixels(std::forward<Visit>(visit));
+
+      figures::Line{x0, y0, x1, y1}.visit_pixels(drawer);
     }
   }
 };
 
-static_assert(Tool<PolygonTool>, "LineTool is a tool");
+static_assert(Tool<PolygonTool>, "PolygonTool is a tool");
 
 } // namespace tools
 

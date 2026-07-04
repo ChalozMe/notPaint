@@ -39,18 +39,19 @@ public:
     }
   }
 
-  template <std::invocable<std::size_t, std::size_t> Visit>
-  void visit_pixels(Visit&& visit) const {
+  void draw(Renderer& renderer) const {
     auto first = std::get_if<FirstClick>(&click);
 
     if (!first)
       return;
 
-    visit(first->x, first->y);
+    figures::Cross{first->x, first->y, 5.0f}.visit_pixels(
+      [&](std::size_t x, std::size_t y) { renderer[x, y] = Colors::BLACK; }
+    );
   }
 };
 
-static_assert(Tool<CrossTool>, "LineTool is a tool");
+static_assert(Tool<CrossTool>, "CrossTool is a tool");
 
 } // namespace tools
 

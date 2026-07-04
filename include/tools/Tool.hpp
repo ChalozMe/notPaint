@@ -1,19 +1,18 @@
 #ifndef TOOL_HPP
 #define TOOL_HPP
 
+#include "Renderer.hpp"
 #include "figures/Figure.hpp"
 #include <optional>
 
 namespace tools {
 
 template <class T>
-concept Tool = requires(T& t) {
+concept Tool = requires(T& t, Renderer& r) {
   typename T::Target;
   requires figures::Figure<typename T::Target>;
   { t.mouse(0, 0, 0, 0) } -> std::same_as<std::optional<typename T::Target>>;
-  {
-    std::as_const(t).visit_pixels([](std::size_t, std::size_t) {})
-  } -> std::same_as<void>;
+  { std::as_const(t).draw(r) } -> std::same_as<void>;
 };
 
 template <Tool... Ts>
@@ -46,12 +45,8 @@ public:
     );
   }
 
-  template <std::invocable<std::size_t, std::size_t> Visit>
-  void visit_pixels(Visit&& visit) const {
-    std::visit(
-      [&](auto&& t) { t.visit_pixels(std::forward<Visit>(visit)); },
-      variant
-    );
+  void draw(Renderer& r) const {
+    std::visit([&](auto&& t) { t.draw(r); }, variant);
   }
 };
 
