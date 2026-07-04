@@ -9,6 +9,7 @@
 #include "tools/RectangleTool.hpp"
 #include "tools/CircleTool.hpp"
 #include "tools/CrossTool.hpp"
+#include "tools/PolygonTool.hpp"
 
 namespace shape {
 template <figures::Figure... Fs>
@@ -40,7 +41,8 @@ using StaticTool = tools::StaticTool<
   tools::LineTool,
   tools::RectangleTool,
   tools::CircleTool,
-  tools::CrossTool>;
+  tools::CrossTool,
+  tools::PolygonTool>;
 using StaticFigure = StaticTool::StaticFigure;
 using Shape = shape::FromStaticFigure<StaticFigure>;
 
@@ -97,6 +99,9 @@ public:
         break;
       case 'x':
         tool = tools::CrossTool{};
+        break;
+      case 'p':
+        tool = tools::PolygonTool{};
         break;
     }
   }
