@@ -4,7 +4,6 @@
 #include "Tool.hpp"
 #include "figures/Rectangle.hpp"
 #include <GL/freeglut_std.h>
-#include <optional>
 
 namespace tools {
 class RectangleTool {

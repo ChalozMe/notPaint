@@ -5,7 +5,6 @@
 #include "figures/Circle.hpp"
 #include <GL/freeglut_std.h>
 #include <cmath>
-#include <optional>
 
 namespace tools {
 class CircleTool {

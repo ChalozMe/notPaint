@@ -2,8 +2,7 @@
 #define LINE_HPP
 
 #include "Figure.hpp"
-#include <cstdlib>
-#include <cstddef>
+#include <cmath>
 
 namespace figures {
 struct Line {

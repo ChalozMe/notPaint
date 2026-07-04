@@ -4,7 +4,6 @@
 #include "Tool.hpp"
 #include "figures/Line.hpp"
 #include <GL/freeglut_std.h>
-#include <optional>
 
 namespace tools {
 class LineTool {
