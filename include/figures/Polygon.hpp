@@ -73,7 +73,7 @@ struct Polygon {
   }
 };
 
-static_assert(Figure<Polygon>, "A rectangle is a figure");
+static_assert(Figure<Polygon>, "A Polygon is a figure");
 } // namespace figures
 
 #endif

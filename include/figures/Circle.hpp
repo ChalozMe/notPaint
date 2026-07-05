@@ -36,7 +36,7 @@ struct Circle {
   }
 };
 
-static_assert(Figure<Circle>, "A circle is a figure");
+static_assert(Figure<Circle>, "A Circle is a figure");
 } // namespace figures
 
 #endif
