@@ -20,11 +20,17 @@ using Shape = shape::FromStaticFigure<StaticFigure>;
 
 class NotPaint {
   std::vector<Shape> shapes = {
-    {figure::Rectangle{0, 0, 200, 200}, {Colors::RED}},
-    {figure::Rectangle{20, 20, 50, 50}, {Colors::GREEN}},
-    {figure::Rectangle{70, 70, 100, 100}, {Colors::BLUE}},
-    {figure::Line{10, 10, 200, 150}, {Colors::BLACK}},
-    {figure::Circle{200, 200, 50}, {Colors::BLACK}},
+    {figure::Rectangle{0, 0, 200, 200},
+     Colors::RED,
+     100uz,
+     100uz,
+     -0.3f,
+     1.3f,
+     1.0f},
+    {figure::Rectangle{20, 20, 50, 50}, Colors::GREEN},
+    {figure::Rectangle{70, 70, 100, 100}, Colors::BLUE},
+    {figure::Line{10, 10, 200, 150}, Colors::BLACK},
+    {figure::Circle{200, 200, 50}, Colors::BLACK},
   };
 
   std::optional<StaticTool> tool;
