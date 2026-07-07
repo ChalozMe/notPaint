@@ -1,5 +1,5 @@
-#ifndef LINE_TOOL_HPP
-#define LINE_TOOL_HPP
+#ifndef TOOL_LINE_HPP
+#define TOOL_LINE_HPP
 
 #include "Tool.hpp"
 #include "figures/Cross.hpp"
@@ -7,7 +7,7 @@
 #include <GL/freeglut_std.h>
 
 namespace tools {
-class LineTool {
+class Line {
   struct NoClick {};
 
   struct FirstClick {
@@ -52,7 +52,7 @@ public:
   }
 };
 
-static_assert(Tool<LineTool>, "LineTool is a tool");
+static_assert(Tool<Line>, "LineTool is a tool");
 
 } // namespace tools
 

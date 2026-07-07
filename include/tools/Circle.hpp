@@ -1,5 +1,5 @@
-#ifndef CIRCLE_TOOL_HPP
-#define CIRCLE_TOOL_HPP
+#ifndef TOOL_CIRCLE_HPP
+#define TOOL_CIRCLE_HPP
 
 #include "Tool.hpp"
 #include "figures/Circle.hpp"
@@ -8,7 +8,7 @@
 #include <cmath>
 
 namespace tools {
-class CircleTool {
+class Circle {
   struct NoClick {};
 
   struct FirstClick {
@@ -52,7 +52,7 @@ public:
   }
 };
 
-static_assert(Tool<CircleTool>, "CircleTool is a tool");
+static_assert(Tool<Circle>, "CircleTool is a tool");
 
 } // namespace tools
 

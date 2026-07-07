@@ -1,5 +1,5 @@
-#ifndef POLYGON_TOOL_HPP
-#define POLYGON_TOOL_HPP
+#ifndef TOOL_POLYGON_HPP
+#define TOOL_POLYGON_HPP
 
 #include "Tool.hpp"
 #include "figures/Cross.hpp"
@@ -8,7 +8,7 @@
 #include <GL/freeglut_std.h>
 
 namespace tools {
-class PolygonTool {
+class Polygon {
   std::vector<std::pair<std::size_t, std::size_t>> points;
 
 public:
@@ -54,7 +54,7 @@ public:
   }
 };
 
-static_assert(Tool<PolygonTool>, "PolygonTool is a tool");
+static_assert(Tool<Polygon>, "PolygonTool is a tool");
 
 } // namespace tools
 

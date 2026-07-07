@@ -2,19 +2,19 @@
 #define NOT_PAINT_HPP
 
 #include "tools/Tool.hpp"
-#include "tools/LineTool.hpp"
-#include "tools/RectangleTool.hpp"
-#include "tools/CircleTool.hpp"
-#include "tools/CrossTool.hpp"
-#include "tools/PolygonTool.hpp"
+#include "tools/Line.hpp"
+#include "tools/Rectangle.hpp"
+#include "tools/Circle.hpp"
+#include "tools/Cross.hpp"
+#include "tools/Polygon.hpp"
 #include "shape/Shape.hpp"
 
 using StaticTool = tools::StaticTool<
-  tools::LineTool,
-  tools::RectangleTool,
-  tools::CircleTool,
-  tools::CrossTool,
-  tools::PolygonTool>;
+  tools::Line,
+  tools::Rectangle,
+  tools::Circle,
+  tools::Cross,
+  tools::Polygon>;
 using StaticFigure = StaticTool::StaticFigure;
 using Shape = shape::FromStaticFigure<StaticFigure>;
 
@@ -27,7 +27,7 @@ class NotPaint {
     {figures::Circle{200, 200, 50}, {Colors::BLACK}},
   };
 
-  std::optional<StaticTool> tool = tools::CircleTool{};
+  std::optional<StaticTool> tool;
 
 public:
   NotPaint() = default;
@@ -59,19 +59,19 @@ public:
         tool.reset();
         break;
       case 'l':
-        tool = tools::LineTool{};
+        tool = tools::Line{};
         break;
       case 'r':
-        tool = tools::RectangleTool{};
+        tool = tools::Rectangle{};
         break;
       case 'c':
-        tool = tools::CircleTool{};
+        tool = tools::Circle{};
         break;
       case 'x':
-        tool = tools::CrossTool{};
+        tool = tools::Cross{};
         break;
       case 'p':
-        tool = tools::PolygonTool{};
+        tool = tools::Polygon{};
         break;
     }
   }

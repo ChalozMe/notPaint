@@ -1,5 +1,5 @@
-#ifndef RECTANGLE_TOOL_HPP
-#define RECTANGLE_TOOL_HPP
+#ifndef TOOL_RECTANGLE_HPP
+#define TOOL_RECTANGLE_HPP
 
 #include "Tool.hpp"
 #include "figures/Cross.hpp"
@@ -7,7 +7,7 @@
 #include <GL/freeglut_std.h>
 
 namespace tools {
-class RectangleTool {
+class Rectangle {
   struct NoClick {};
 
   struct FirstClick {
@@ -52,7 +52,7 @@ public:
   }
 };
 
-static_assert(Tool<RectangleTool>, "RectangleTool is a tool");
+static_assert(Tool<Rectangle>, "RectangleTool is a tool");
 
 } // namespace tools
 

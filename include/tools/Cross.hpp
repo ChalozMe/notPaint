@@ -1,5 +1,5 @@
-#ifndef CROSS_TOOL_HPP
-#define CROSS_TOOL_HPP
+#ifndef TOOL_CROSS_HPP
+#define TOOL_CROSS_HPP
 
 #include "Tool.hpp"
 #include "figures/Cross.hpp"
@@ -7,7 +7,7 @@
 #include <cmath>
 
 namespace tools {
-class CrossTool {
+class Cross {
   struct NoClick {};
 
   struct FirstClick {
@@ -51,7 +51,7 @@ public:
   }
 };
 
-static_assert(Tool<CrossTool>, "CrossTool is a tool");
+static_assert(Tool<Cross>, "CrossTool is a tool");
 
 } // namespace tools
 

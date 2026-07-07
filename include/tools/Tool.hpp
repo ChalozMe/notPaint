@@ -1,5 +1,5 @@
-#ifndef TOOL_HPP
-#define TOOL_HPP
+#ifndef TOOL_TOOL_HPP
+#define TOOL_TOOL_HPP
 
 #include "Renderer.hpp"
 #include "figures/Figure.hpp"
