@@ -1,13 +1,13 @@
-#ifndef SHAPE_HPP
-#define SHAPE_HPP
+#ifndef SHAPE_SHAPE_HPP
+#define SHAPE_SHAPE_HPP
 
-#include "figures/Figure.hpp"
+#include "figure/Figure.hpp"
 #include "Renderer.hpp"
 
 namespace shape {
-template <figures::Figure... Fs>
+template <figure::Figure... Fs>
 struct Shape {
-  figures::StaticFigure<Fs...> figure;
+  figure::StaticFigure<Fs...> figure;
   Color color;
 
   bool is_clicked(std::size_t x, std::size_t y) const {
@@ -33,7 +33,7 @@ namespace {
   struct FromStaticFigureImpl;
 
   template <class... Fs>
-  struct FromStaticFigureImpl<figures::StaticFigure<Fs...>> {
+  struct FromStaticFigureImpl<figure::StaticFigure<Fs...>> {
     using t = Shape<Fs...>;
   };
 } // namespace

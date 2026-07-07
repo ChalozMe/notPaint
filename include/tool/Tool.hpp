@@ -2,15 +2,14 @@
 #define TOOL_TOOL_HPP
 
 #include "Renderer.hpp"
-#include "figures/Figure.hpp"
+#include "figure/Figure.hpp"
 #include <optional>
 
-namespace tools {
-
+namespace tool {
 template <class T>
 concept Tool = requires(T& t, Renderer& r) {
   typename T::Target;
-  requires figures::Figure<typename T::Target>;
+  requires figure::Figure<typename T::Target>;
   { t.mouse(0, 0, 0, 0) } -> std::same_as<std::optional<typename T::Target>>;
   { std::as_const(t).draw(r) } -> std::same_as<void>;
 };
@@ -34,7 +33,7 @@ public:
   explicit constexpr StaticTool(std::in_place_type_t<T>, Args&&... args) :
     variant(std::in_place_type<T>, std::forward<Args>(args)...) {}
 
-  using StaticFigure = figures::StaticFigure<typename Ts::Target...>;
+  using StaticFigure = figure::StaticFigure<typename Ts::Target...>;
 
   std::optional<StaticFigure> mouse(int button, int state, int x, int y) {
     return std::visit(
@@ -49,7 +48,6 @@ public:
     std::visit([&](auto&& t) { t.draw(r); }, variant);
   }
 };
-
-} // namespace tools
+} // namespace tool
 
 #endif

@@ -1,5 +1,5 @@
-#ifndef POLYGON_HPP
-#define POLYGON_HPP
+#ifndef FIGURE_POLYGON_HPP
+#define FIGURE_POLYGON_HPP
 
 #include "Figure.hpp"
 #include <algorithm>
@@ -7,7 +7,7 @@
 #include <vector>
 #include <ranges>
 
-namespace figures {
+namespace figure {
 struct Polygon {
   using Point = std::pair<std::size_t, std::size_t>;
   std::vector<Point> points;
@@ -74,6 +74,6 @@ struct Polygon {
 };
 
 static_assert(Figure<Polygon>, "A Polygon is a figure");
-} // namespace figures
+} // namespace figure
 
 #endif

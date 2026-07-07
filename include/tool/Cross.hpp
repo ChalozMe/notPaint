@@ -1,13 +1,13 @@
-#ifndef TOOL_LINE_HPP
-#define TOOL_LINE_HPP
+#ifndef TOOL_CROSS_HPP
+#define TOOL_CROSS_HPP
 
 #include "Tool.hpp"
-#include "figures/Cross.hpp"
-#include "figures/Line.hpp"
+#include "figure/Cross.hpp"
 #include <GL/freeglut_std.h>
+#include <cmath>
 
-namespace tools {
-class Line {
+namespace tool {
+class Cross {
   struct NoClick {};
 
   struct FirstClick {
@@ -17,7 +17,7 @@ class Line {
   std::variant<NoClick, FirstClick> click;
 
 public:
-  using Target = figures::Line;
+  using Target = figure::Cross;
 
   std::optional<Target> mouse(int button, int state, int x, int y) {
     if (state != GLUT_DOWN || button != GLUT_LEFT_BUTTON)
@@ -29,14 +29,13 @@ public:
       return std::nullopt;
     } else {
       auto first_click = std::get<FirstClick>(click);
+      float radius = std::hypot<float>(
+        static_cast<float>(first_click.x) - x,
+        static_cast<float>(first_click.y) - y
+      );
       click = NoClick{};
 
-      return Target{
-        first_click.x,
-        first_click.y,
-        static_cast<std::size_t>(x),
-        static_cast<std::size_t>(y)
-      };
+      return Target{first_click.x, first_click.y, radius};
     }
   }
 
@@ -46,14 +45,13 @@ public:
     if (!first)
       return;
 
-    figures::Cross{first->x, first->y, 5.0f}.visit_pixels(
+    figure::Cross{first->x, first->y, 5.0f}.visit_pixels(
       [&](std::size_t x, std::size_t y) { renderer[x, y] = Colors::BLACK; }
     );
   }
 };
 
-static_assert(Tool<Line>, "LineTool is a tool");
-
-} // namespace tools
+static_assert(Tool<Cross>, "CrossTool is a tool");
+} // namespace tool
 
 #endif

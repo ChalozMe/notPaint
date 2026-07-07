@@ -1,10 +1,10 @@
-#ifndef CROSS_HPP
-#define CROSS_HPP
+#ifndef FIGURE_CROSS_HPP
+#define FIGURE_CROSS_HPP
 
-#include "figures/Line.hpp"
+#include "figure/Line.hpp"
 #include <algorithm>
 
-namespace figures {
+namespace figure {
 struct Cross {
   std::size_t cx;
   std::size_t cy;
@@ -27,7 +27,7 @@ struct Cross {
   }
 };
 
-static_assert(Figure<Cross>, "A Cross is a figure");
-} // namespace figures
+static_assert(Figure<Cross>, "Cross is a figure");
+} // namespace figure
 
 #endif

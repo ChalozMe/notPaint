@@ -1,11 +1,11 @@
-#ifndef FIGURE_HPP
-#define FIGURE_HPP
+#ifndef FIGURE_FIGURE_HPP
+#define FIGURE_FIGURE_HPP
 
 #include <concepts>
 #include <utility>
 #include <variant>
 
-namespace figures {
+namespace figure {
 template <class F>
 concept Figure = requires(const F& f) {
   {
@@ -40,7 +40,6 @@ public:
     );
   }
 };
-
-} // namespace figures
+} // namespace figure
 
 #endif

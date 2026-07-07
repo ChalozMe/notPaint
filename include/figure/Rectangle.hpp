@@ -1,10 +1,10 @@
-#ifndef RECTANGLE_HPP
-#define RECTANGLE_HPP
+#ifndef FIGURE_RECTANGLE_HPP
+#define FIGURE_RECTANGLE_HPP
 
 #include "Figure.hpp"
 #include <algorithm>
 
-namespace figures {
+namespace figure {
 struct Rectangle {
   std::size_t x0;
   std::size_t y0;
@@ -19,7 +19,7 @@ struct Rectangle {
   }
 };
 
-static_assert(Figure<Rectangle>, "A Rectangle is a figure");
-} // namespace figures
+static_assert(Figure<Rectangle>, "Rectangle is a figure");
+} // namespace figure
 
 #endif

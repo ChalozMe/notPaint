@@ -1,13 +1,14 @@
-#ifndef TOOL_RECTANGLE_HPP
-#define TOOL_RECTANGLE_HPP
+#ifndef TOOL_CIRCLE_HPP
+#define TOOL_CIRCLE_HPP
 
 #include "Tool.hpp"
-#include "figures/Cross.hpp"
-#include "figures/Rectangle.hpp"
+#include "figure/Circle.hpp"
+#include "figure/Cross.hpp"
 #include <GL/freeglut_std.h>
+#include <cmath>
 
-namespace tools {
-class Rectangle {
+namespace tool {
+class Circle {
   struct NoClick {};
 
   struct FirstClick {
@@ -17,7 +18,7 @@ class Rectangle {
   std::variant<NoClick, FirstClick> click;
 
 public:
-  using Target = figures::Rectangle;
+  using Target = figure::Circle;
 
   std::optional<Target> mouse(int button, int state, int x, int y) {
     if (state != GLUT_DOWN || button != GLUT_LEFT_BUTTON)
@@ -29,14 +30,13 @@ public:
       return std::nullopt;
     } else {
       auto first_click = std::get<FirstClick>(click);
+      float radius = std::hypot<float>(
+        static_cast<float>(first_click.x) - x,
+        static_cast<float>(first_click.y) - y
+      );
       click = NoClick{};
 
-      return Target{
-        first_click.x,
-        first_click.y,
-        static_cast<std::size_t>(x),
-        static_cast<std::size_t>(y)
-      };
+      return Target{first_click.x, first_click.y, radius};
     }
   }
 
@@ -46,14 +46,13 @@ public:
     if (!first)
       return;
 
-    figures::Cross{first->x, first->y, 5.0f}.visit_pixels(
+    figure::Cross{first->x, first->y, 5.0f}.visit_pixels(
       [&](std::size_t x, std::size_t y) { renderer[x, y] = Colors::BLACK; }
     );
   }
 };
 
-static_assert(Tool<Rectangle>, "RectangleTool is a tool");
-
-} // namespace tools
+static_assert(Tool<Circle>, "CircleTool is a tool");
+} // namespace tool
 
 #endif

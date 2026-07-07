@@ -1,17 +1,16 @@
-#ifndef CIRCLE_HPP
-#define CIRCLE_HPP
+#ifndef FIGURE_CIRCLE_HPP
+#define FIGURE_CIRCLE_HPP
 
 #include "Figure.hpp"
 #include <algorithm>
 
-namespace figures {
+namespace figure {
 struct Circle {
   std::size_t cx;
   std::size_t cy;
   float radius;
 
   // TODO: This is O(n^2), there are some O(n) algortihms
-
   template <std::invocable<std::size_t, std::size_t> Visit>
   void visit_pixels(Visit&& visit) const {
     float fx0 = static_cast<float>(cx) - radius;
@@ -36,7 +35,7 @@ struct Circle {
   }
 };
 
-static_assert(Figure<Circle>, "A Circle is a figure");
-} // namespace figures
+static_assert(Figure<Circle>, "Circle is a figure");
+} // namespace figure
 
 #endif

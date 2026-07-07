@@ -1,10 +1,10 @@
-#ifndef LINE_HPP
-#define LINE_HPP
+#ifndef FIGURE_LINE_HPP
+#define FIGURE_LINE_HPP
 
 #include "Figure.hpp"
 #include <cmath>
 
-namespace figures {
+namespace figure {
 struct Line {
   std::size_t x0;
   std::size_t y0;
@@ -48,7 +48,7 @@ struct Line {
   }
 };
 
-static_assert(Figure<Line>, "A Line is a figure");
-} // namespace figures
+static_assert(Figure<Line>, "Line is a figure");
+} // namespace figure
 
 #endif

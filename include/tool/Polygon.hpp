@@ -2,17 +2,17 @@
 #define TOOL_POLYGON_HPP
 
 #include "Tool.hpp"
-#include "figures/Cross.hpp"
-#include "figures/Line.hpp"
-#include "figures/Polygon.hpp"
+#include "figure/Cross.hpp"
+#include "figure/Line.hpp"
+#include "figure/Polygon.hpp"
 #include <GL/freeglut_std.h>
 
-namespace tools {
+namespace tool {
 class Polygon {
   std::vector<std::pair<std::size_t, std::size_t>> points;
 
 public:
-  using Target = figures::Polygon;
+  using Target = figure::Polygon;
 
   std::optional<Target> mouse(int button, int state, int x, int y) {
     if (state != GLUT_DOWN)
@@ -43,19 +43,18 @@ public:
     };
 
     for (auto [x, y] : points)
-      figures::Cross{x, y, 5.0f}.visit_pixels(drawer);
+      figure::Cross{x, y, 5.0f}.visit_pixels(drawer);
 
     for (auto [p0, p1] : std::views::pairwise(points)) {
       auto [x0, y0] = p0;
       auto [x1, y1] = p1;
 
-      figures::Line{x0, y0, x1, y1}.visit_pixels(drawer);
+      figure::Line{x0, y0, x1, y1}.visit_pixels(drawer);
     }
   }
 };
 
 static_assert(Tool<Polygon>, "PolygonTool is a tool");
-
-} // namespace tools
+} // namespace tool
 
 #endif
