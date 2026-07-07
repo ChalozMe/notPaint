@@ -1,39 +1,13 @@
 #ifndef NOT_PAINT_HPP
 #define NOT_PAINT_HPP
 
-#include "figures/Figure.hpp"
 #include "tools/Tool.hpp"
 #include "tools/LineTool.hpp"
 #include "tools/RectangleTool.hpp"
 #include "tools/CircleTool.hpp"
 #include "tools/CrossTool.hpp"
 #include "tools/PolygonTool.hpp"
-
-namespace shape {
-template <figures::Figure... Fs>
-struct Shape {
-  figures::StaticFigure<Fs...> figure;
-  Color color;
-
-  void draw(Renderer& r) const {
-    figure.visit_pixels([&](std::size_t x, std::size_t y) {
-      if (x < r.get_width() && y < r.get_height())
-        r[x, y] = color;
-    });
-  }
-};
-
-template <class Sf>
-struct FromStaticFigureImpl;
-
-template <class... Fs>
-struct FromStaticFigureImpl<figures::StaticFigure<Fs...>> {
-  using t = Shape<Fs...>;
-};
-
-template <class Sf>
-using FromStaticFigure = FromStaticFigureImpl<Sf>::t;
-} // namespace shape
+#include "shape/Shape.hpp"
 
 using StaticTool = tools::StaticTool<
   tools::LineTool,
