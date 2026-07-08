@@ -18,11 +18,19 @@ struct Shape {
   float sy = 1.0f;
   float angle = 0.0f;
 
-  bool is_clicked(std::size_t x, std::size_t y) const {
-    bool is_clicked = false;
+  bool is_clicked(std::size_t click_x, std::size_t click_y) const {
+    auto [min_x, min_y, max_x, max_y] = bounding_box();
+    auto cx = std::midpoint(min_x, max_x);
+    auto cy = std::midpoint(min_y, max_y);
 
-    figure.visit_pixels([&](std::size_t _x, std::size_t _y) {
-      is_clicked = is_clicked || (x == _x && y == _y);
+    bool is_clicked = false;
+    figure.visit_pixels([&](std::size_t px, std::size_t py) {
+      auto [fx, fy] = transform(px, py, cx, cy);
+      if (0 <= fx && 0 <= fy) {
+        std::size_t x = fx;
+        std::size_t y = fy;
+        is_clicked = is_clicked || (x == click_x && y == click_y);
+      }
     });
 
     return is_clicked;
@@ -41,37 +49,28 @@ struct Shape {
     return {min_x, min_y, max_x, max_y};
   }
 
+  std::pair<float, float>
+  transform(float x, float y, float cx, float cy) const {
+    float dx = sx * (x - cx);
+    float dy = sy * (y - cy);
+    float rx = dx * std::cos(angle) - dy * std::sin(angle);
+    float ry = dx * std::sin(angle) + dy * std::cos(angle);
+
+    return {rx + static_cast<float>(tx) + cx, ry + static_cast<float>(ty) + cy};
+  }
+
   void draw(Renderer& r) const {
     auto [min_x, min_y, max_x, max_y] = bounding_box();
     auto cx = std::midpoint(min_x, max_x);
     auto cy = std::midpoint(min_y, max_y);
 
-    figure.visit_pixels([&](std::size_t fx, std::size_t fy) {
-      float dx = static_cast<float>(fx) - static_cast<float>(cx);
-      float dy = static_cast<float>(fy) - static_cast<float>(cy);
-      float rx = dx * std::cos(angle) - dy * std::sin(angle);
-      float ry = dx * std::sin(angle) + dy * std::cos(angle);
-      float x = sx * rx + static_cast<float>(cx);
-      float y = sy * ry + static_cast<float>(cy);
-
-      if (0.0 <= x && x < r.get_width() && 0.0 <= y && y < r.get_height())
-        r[x, y] = color;
+    figure.visit_pixels([&](std::size_t px, std::size_t py) {
+      auto [x, y] = transform(px, py, cx, cy);
+      if (0.0f <= x && x < r.get_width() && 0.0f <= y && y < r.get_height())
+        r[static_cast<std::size_t>(x), static_cast<std::size_t>(y)] = color;
     });
   }
 };
-
-namespace {
-  template <class Sf>
-  struct FromStaticFigureImpl;
-
-  template <class... Fs>
-  struct FromStaticFigureImpl<figure::StaticFigure<Fs...>> {
-    using t = Shape<Fs...>;
-  };
-} // namespace
-
-template <class Sf>
-using FromStaticFigure = FromStaticFigureImpl<Sf>::t;
 } // namespace shape
 
 #endif
