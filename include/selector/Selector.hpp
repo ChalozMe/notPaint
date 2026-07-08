@@ -94,18 +94,51 @@ public:
       {shape.transform(max_x, min_y, cx, cy)},
     }};
 
+    // Liang–Barsky line clipping algorithm
+    float width = static_cast<float>(r.get_width() - 1);
+    float height = static_cast<float>(r.get_height() - 1);
+
     for (std::size_t idx = 0; idx < 4; idx++) {
       auto [x0, y0] = corners[idx];
       auto [x1, y1] = corners[(idx + 1) % 4];
 
-      // TODO: cut the line so that it falls within boundaries
-      // maybe Liang–Barsky algorithm, rn it just crashes lmao
+      float t0 = 0.0f;
+      float t1 = 1.0f;
 
-      figure::Line(x0, y0, x1, y1)
-        .visit_pixels([&](std::size_t x, std::size_t y) {
+      auto clip = [&](float p, float q) {
+        if (p == 0.0f)
+          return q >= 0.0f;
+
+        float t = q / p;
+
+        if (p < 0.0f)
+          t0 = std::max(t0, t);
+        else
+          t1 = std::min(t1, t);
+
+        return t0 <= t1;
+      };
+
+      float dx = x1 - x0;
+      float dy = y1 - y0;
+
+      bool fully_out = !clip(-dx, x0) || !clip(dx, width - x0) ||
+        !clip(-dy, y0) || !clip(dy, height - y0);
+
+      if (fully_out)
+        continue;
+
+      std::size_t cx0 = std::llround(x0 + t0 * dx);
+      std::size_t cy0 = std::llround(y0 + t0 * dy);
+      std::size_t cx1 = std::llround(x0 + t1 * dx);
+      std::size_t cy1 = std::llround(y0 + t1 * dy);
+
+      figure::Line{cx0, cy0, cx1, cy1}.visit_pixels(
+        [&r](std::size_t x, std::size_t y) {
           if ((x + y) % 2 == 0)
             r[x, y] = Colors::BLACK;
-        });
+        }
+      );
     }
   }
 };
