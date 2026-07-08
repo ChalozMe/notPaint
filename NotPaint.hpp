@@ -49,7 +49,9 @@ public:
       shapes.emplace_back(*figure);
   }
 
-  void motion(int, int) {}
+  void motion(int x, int y) {
+    tool.motion(x, y, shapes);
+  }
 
   void keyboard(unsigned char key, int, int) {
     tool.keyboard(key);

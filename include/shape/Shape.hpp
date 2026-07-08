@@ -12,8 +12,8 @@ template <figure::Figure... Fs>
 struct Shape {
   figure::StaticFigure<Fs...> figure;
   Color color;
-  std::size_t tx = 0uz;
-  std::size_t ty = 0uz;
+  float tx = 0.0f;
+  float ty = 0.0f;
   float sx = 1.0f;
   float sy = 1.0f;
   float angle = 0.0f;
@@ -56,7 +56,7 @@ struct Shape {
     float rx = dx * std::cos(angle) - dy * std::sin(angle);
     float ry = dx * std::sin(angle) + dy * std::cos(angle);
 
-    return {rx + static_cast<float>(tx) + cx, ry + static_cast<float>(ty) + cy};
+    return {rx + tx + cx, ry + ty + cy};
   }
 
   void draw(Renderer& r) const {

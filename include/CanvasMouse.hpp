@@ -49,7 +49,16 @@ public:
     );
   }
 
-public:
+  void motion(int x, int y, std::vector<Shape>& shapes) {
+    return std::visit(
+      [&]<class T>(T& tool) {
+        if constexpr (std::same_as<T, Selector>)
+          tool.motion(x, y, shapes);
+      },
+      tool
+    );
+  }
+
   void keyboard(unsigned char key) {
     auto dispatch_key =
       [this]<class First, class... Tail>(this auto&& rec, unsigned char key) {
